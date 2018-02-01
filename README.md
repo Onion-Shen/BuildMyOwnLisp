@@ -1,2 +1,3 @@
 # BuildMyOwnLisp
-This is the implementation of build my own lisp,the lesson:https://www.shiyanlou.com/courses/670
+This is the implementation of BuildYourOwnLisp.
+The lesson of Chinese version: https://www.shiyanlou.com/courses/670

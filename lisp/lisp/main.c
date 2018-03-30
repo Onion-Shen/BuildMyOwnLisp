@@ -3,25 +3,19 @@
 #include <readline/history.h>
 
 /* Parser Declariations */
-
-mpc_parser_t *Number;
 mpc_parser_t *Symbol;
-mpc_parser_t *String;
-mpc_parser_t *Comment;
 mpc_parser_t *Sexpr;
 mpc_parser_t *Qexpr;
 mpc_parser_t *Expr;
 mpc_parser_t *Lispy;
 
 /* Forward Declarations */
-
 struct lval;
 struct lenv;
 typedef struct lval lval;
 typedef struct lenv lenv;
 
 /* Lisp Value */
-
 enum
 {
   LVAL_ERR,
@@ -705,7 +699,7 @@ lval *builtin_ord(lenv *e, lval *a, char *op)
   LASSERT_TYPE(op, a, 0, LVAL_NUM);
   LASSERT_TYPE(op, a, 1, LVAL_NUM);
 
-  int r;
+  int r = 0;
   if (strcmp(op, ">") == 0)
   {
     r = (a->cell[0]->num > a->cell[1]->num);
@@ -734,7 +728,7 @@ lval *builtin_le(lenv *e, lval *a) { return builtin_ord(e, a, "<="); }
 lval *builtin_cmp(lenv *e, lval *a, char *op)
 {
   LASSERT_NUM(op, a, 2);
-  int r;
+  int r = 0;
   if (strcmp(op, "==") == 0)
   {
     r = lval_eq(a->cell[0], a->cell[1]);
@@ -1124,14 +1118,12 @@ lval *lval_read(mpc_ast_t *t)
 }
 
 /* Main */
-
 int main(int argc, char **argv)
 {
-
-  Number = mpc_new("number");
+  mpc_parser_t *Number = mpc_new("number");
   Symbol = mpc_new("symbol");
-  String = mpc_new("string");
-  Comment = mpc_new("comment");
+  mpc_parser_t *String = mpc_new("string");
+  mpc_parser_t *Comment = mpc_new("comment");
   Sexpr = mpc_new("sexpr");
   Qexpr = mpc_new("qexpr");
   Expr = mpc_new("expr");
@@ -1157,20 +1149,17 @@ int main(int argc, char **argv)
   /* Interactive Prompt */
   if (argc == 1)
   {
-
     puts("Lispy Version 1.0");
     puts("Press Ctrl+c to Exit\n");
 
     while (1)
     {
-
       char *input = readline("lispy> ");
       add_history(input);
 
       mpc_result_t r;
       if (mpc_parse("<stdin>", input, Lispy, &r))
       {
-
         lval *x = lval_eval(e, lval_read(r.output));
         lval_println(x);
         lval_del(x);

@@ -1,4 +1,4 @@
-#include "mpc.h"
+#include "./lib/mpc.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 

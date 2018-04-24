@@ -5,7 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(lldb) Launch",
+            "type": "lldb",
+            "request": "launch",
+            "name": "LLDB Debugger",
+            "program": "${workspaceFolder}/lisp/a.out",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "MS LLDB",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/lisp/a.out",

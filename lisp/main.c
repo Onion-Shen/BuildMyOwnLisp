@@ -391,8 +391,7 @@ char *ltype_name(int t)
   }
 }
 
-/* Lisp Environment */
-
+#pragma mark -- Lisp Environment
 struct lenv
 {
   lenv *par;

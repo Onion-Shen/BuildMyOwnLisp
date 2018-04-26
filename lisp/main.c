@@ -11,10 +11,10 @@ struct lenv;
 typedef struct lval lval;
 typedef struct lenv lenv;
 
-/* Lisp Value */
-enum
+#pragma mark-- Lisp Value
+enum LispValueType
 {
-  LVAL_ERR,
+  LVAL_ERR = 0,
   LVAL_NUM,
   LVAL_SYM,
   LVAL_STR,
@@ -106,7 +106,7 @@ lval *lval_lambda(lval *formals, lval *body)
   return v;
 }
 
-lval *lval_sexpr(void)
+lval *lval_sexpr()
 {
   lval *v = malloc(sizeof(lval));
   v->type = LVAL_SEXPR;
@@ -115,7 +115,7 @@ lval *lval_sexpr(void)
   return v;
 }
 
-lval *lval_qexpr(void)
+lval *lval_qexpr()
 {
   lval *v = malloc(sizeof(lval));
   v->type = LVAL_QEXPR;
@@ -400,7 +400,7 @@ struct lenv
   lval **vals;
 };
 
-lenv *lenv_new(void)
+lenv *lenv_new()
 {
   lenv *e = malloc(sizeof(lenv));
   e->par = NULL;
@@ -489,8 +489,7 @@ void lenv_def(lenv *e, lval *k, lval *v)
   lenv_put(e, k, v);
 }
 
-  /* Builtins */
-
+#pragma mark-- Builtins
 #define LASSERT(args, cond, fmt, ...)         \
   if (!(cond))                                \
   {                                           \
@@ -888,8 +887,7 @@ void lenv_add_builtins(lenv *e)
   lenv_add_builtin(e, "print", builtin_print);
 }
 
-/* Evaluation */
-
+#pragma mark-- Evaluation
 lval *lval_call(lenv *e, lval *f, lval *a)
 {
 
@@ -1025,8 +1023,7 @@ lval *lval_eval(lenv *e, lval *v)
   return v;
 }
 
-/* Reading */
-
+#pragma mark-- Reading
 lval *lval_read_num(mpc_ast_t *t)
 {
   errno = 0;
@@ -1141,8 +1138,7 @@ int main(int argc, char **argv)
   lenv *e = lenv_new();
   lenv_add_builtins(e);
 
-  /* Interactive Prompt */
-  if (argc == 1)
+  if (argc == 1) /* Interactive Prompt */
   {
     puts("Lispy Version 1.0");
     puts("Press Ctrl+c to Exit\n");
@@ -1170,9 +1166,7 @@ int main(int argc, char **argv)
       free(input);
     }
   }
-
-  /* Supplied with list of files */
-  if (argc >= 2)
+  else if (argc >= 2) /* Supplied with list of files */
   {
     /* loop over each supplied filename (starting from 1) */
     for (int i = 1; i < argc; i++)
